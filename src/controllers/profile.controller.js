@@ -1,5 +1,9 @@
+import axios from 'axios';
+
 import Profile from '../models/Profile';
 import User from '../models/User';
+
+require('dotenv').config();
 
 // @route   POST /profiles
 // @desc    Create a profile
@@ -190,5 +194,22 @@ exports.deleteEducation = async (req, res) => {
     return res.json(profile);
   } catch (err) {
     return res.status(500).json({ err: 'Server Error' });
+  }
+};
+
+// @route   GET /profiles/:id/github/:username
+// @desc    Get user repos from github
+// @acess   Public
+
+exports.getGithubRepos = async (req, res) => {
+  try {
+    const url = `https://api.github.com/users/${req.params.username}/repos?per_page=5&sort=created:asc&client_id=${process.env.GITHUBCLIENTID}&client_secret=${process.env.GITHUBSECRET}`;
+
+    const response = await axios.get(url);
+    console.log(response);
+
+    res.json(response.data);
+  } catch (err) {
+    res.status(500).json({ err: 'Server error' });
   }
 };

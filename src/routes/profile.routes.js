@@ -26,4 +26,6 @@ routes.delete(
   auth,
   profileController.deleteEducation,
 );
+
+routes.get('/:id/github/:username', profileController.getGithubRepos);
 export default routes;
