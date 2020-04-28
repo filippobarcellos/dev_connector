@@ -83,10 +83,10 @@ exports.deleteProfile = async (req, res) => {
   }
 };
 
-// @route   PUT /profiles/:id
+// @route   PUT /profiles/:id/experience
 // @desc    Update a profile
 // @acess   Private
-exports.updateProfile = async (req, res) => {
+exports.addExperience = async (req, res) => {
   const { id } = req.params;
   const { title, company, location, from, to, current, description } = req.body;
 
@@ -105,6 +105,86 @@ exports.updateProfile = async (req, res) => {
     console.log(profile);
     profile.experience.unshift(newExperience);
 
+    await profile.save();
+
+    return res.json(profile);
+  } catch (err) {
+    return res.status(500).json({ err: 'Server Error' });
+  }
+};
+
+// @route   DELETE /profiles/:id/experience/:expId
+// @desc    Delete a experience
+// @acess   Private
+
+exports.deleteExperience = async (req, res) => {
+  const { id, expId } = req.params;
+
+  try {
+    const profile = await Profile.findOne({ user: id });
+
+    const removeIndex = profile.experience
+      .map((item) => item.id)
+      .indexOf(expId);
+
+    profile.experience.splice(removeIndex, 1);
+    await profile.save();
+
+    return res.json(profile);
+  } catch (err) {
+    return res.status(500).json({ err: 'Server Error' });
+  }
+};
+
+exports.addEducation = async (req, res) => {
+  const { id } = req.params;
+  const {
+    school,
+    degree,
+    fieldofstudy,
+    from,
+    to,
+    current,
+    description,
+  } = req.body;
+
+  const newEducation = {
+    school,
+    degree,
+    fieldofstudy,
+    from,
+    to,
+    current,
+    description,
+  };
+
+  try {
+    const profile = await Profile.findOne({ user: id });
+    profile.education.unshift(newEducation);
+
+    await profile.save();
+
+    return res.json(profile);
+  } catch (err) {
+    return res.status(500).json({ err: 'Server Error' });
+  }
+};
+
+// @route   DELETE /profiles/:id/experience/:educId
+// @desc    Delete a experience
+// @acess   Private
+
+exports.deleteEducation = async (req, res) => {
+  const { id, educId } = req.params;
+
+  try {
+    const profile = await Profile.findOne({ user: id });
+
+    const removeIndex = profile.experience
+      .map((item) => item.id)
+      .indexOf(educId);
+
+    profile.education.splice(removeIndex, 1);
     await profile.save();
 
     return res.json(profile);

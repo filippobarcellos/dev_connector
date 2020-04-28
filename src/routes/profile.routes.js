@@ -11,7 +11,19 @@ const routes = Router();
 routes.get('/:id', auth, profileController.getProfile);
 routes.get('/', auth, profileController.getAllProfiles);
 routes.post('/', auth, validateProfile, profileController.createProfile);
-routes.put('/:id', auth, profileController.updateProfile);
 routes.delete('/', auth, profileController.deleteProfile);
 
+routes.put('/:id/experience', auth, profileController.addExperience);
+routes.delete(
+  '/:id/experience/:expId',
+  auth,
+  profileController.deleteExperience,
+);
+
+routes.put('/:id/education', auth, profileController.addEducation);
+routes.delete(
+  '/:id/education/:educId',
+  auth,
+  profileController.deleteEducation,
+);
 export default routes;
