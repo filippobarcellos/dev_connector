@@ -206,7 +206,6 @@ exports.getGithubRepos = async (req, res) => {
     const url = `https://api.github.com/users/${req.params.username}/repos?per_page=5&sort=created:asc&client_id=${process.env.GITHUBCLIENTID}&client_secret=${process.env.GITHUBSECRET}`;
 
     const response = await axios.get(url);
-    console.log(response);
 
     res.json(response.data);
   } catch (err) {
